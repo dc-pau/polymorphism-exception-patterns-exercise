@@ -1,4 +1,8 @@
+import java.util.Scanner;
+
 public class Validations {
+  public static Scanner input = new Scanner(System.in);
+
   public static int menuChecker(String prompt){
     boolean isValidMenu = false;
     int menu = 0;
@@ -47,11 +51,6 @@ public class Validations {
         hasInput = true;
       }
     }
-
-    if(type == 1){
-      str = idValidation(prompt, str, regex);
-    }
-
     return str;
   }
 }
