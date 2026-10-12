@@ -24,7 +24,7 @@ public abstract class Parcel {
 
   //setters
   public void setDeliveryStatus(){this.status = Status.DELIVERED;}
-  public boolean isDelivered(){return this.status.equals(Status.DELIVERED);}
+  public boolean isDelivered(){return this.status == Status.DELIVERED;}
 
   public void setDeliveryService(DeliveryService deliveryService){this.deliveryService = deliveryService;}
   //public Status setStatus(){}
