@@ -1,3 +1,4 @@
+package model;
 public class Box extends Parcel {
   private int length;
   private int width;

@@ -1,3 +1,4 @@
+package model;
 public class Document extends Parcel{
   private int pages;
 

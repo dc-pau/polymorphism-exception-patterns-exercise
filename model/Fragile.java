@@ -1,3 +1,4 @@
+package model;
 public class Fragile extends Box{
   private String handlingNote;
 
