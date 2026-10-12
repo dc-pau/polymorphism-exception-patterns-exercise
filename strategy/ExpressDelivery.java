@@ -6,7 +6,7 @@ import model.Parcel;
 public class ExpressDelivery implements DeliveryStrategy{
   @Override
   public double computeFee(Parcel parcel){
-    return parcel.getBaseFee();
+    return parcel.getBaseFee() * 1.5;
   }
 
   @Override
@@ -16,6 +16,6 @@ public class ExpressDelivery implements DeliveryStrategy{
 
   @Override
   public String getService(){
-    return "Standard Delivery";
+    return "Express Delivery";
   }
 }
