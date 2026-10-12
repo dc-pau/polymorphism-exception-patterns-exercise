@@ -1,4 +1,7 @@
 package model;
+
+//CHILD CLASS OF PARCEL
+//INHERITANCE --> USES PARCEL'S METHODS AND FIELDS [super()]
 public class Document extends Parcel{
   private int pages;
 

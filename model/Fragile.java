@@ -1,4 +1,6 @@
 package model;
+
+//INHERITANCE --> USES BOX'S METHODS AND FIELDS [super()]
 public class Fragile extends Box{
   private String handlingNote;
 

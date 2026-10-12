@@ -1,4 +1,8 @@
 package model;
+
+//CHILD CLASS OF PARCEL
+//INHERITANCE --> USES PARCEL'S METHODS AND FIELDS [super()]
+//PARENT CLASS OF FRAGILE
 public class Box extends Parcel {
   private int length;
   private int width;
