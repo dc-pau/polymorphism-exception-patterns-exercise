@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import model.Box;
 import model.DeliveryService;
@@ -16,6 +17,8 @@ public class ParcelDeliverySystem{
   public static Scanner input = new Scanner(System.in);
 
   public static Items item = new Items();
+
+  public static ArrayList<Parcel> parcels = new ArrayList<>();
 
   public static void addParcel(){
     Display.headerTitle("Add Parcel");
@@ -48,7 +51,7 @@ public class ParcelDeliverySystem{
     Parcel parcel = switch(chooseParcel){
       case 1 -> addDocument(trackingNum, receiversName, weight);
       case 2 -> addBox(trackingNum, receiversName, weight);
-      case 3 -> new Fragile(parcelType, receiversName, weight, serviceChoice, chooseParcel, serviceChoice, receiversName);
+      case 3 -> addFragile(trackingNum, receiversName, weight);
       default -> throw new IllegalArgumentException("Invalid delivery service");
     };
 
@@ -60,9 +63,9 @@ public class ParcelDeliverySystem{
     };
 
     double deliveryFee = parcel.getDeliveryFee(delivery);
-    item.addParcelItem(parcel, deliveryFee);
-
-    //status -> pending, delivered
+    parcel.setDeliveryFee(deliveryFee);
+    parcels.add(parcel);
+    System.out.printf("Parcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
   }
 
   public static Document addDocument(String trackingNum, String name, double weight){
@@ -85,26 +88,22 @@ public class ParcelDeliverySystem{
     return new Fragile(trackingNum, name, weight, length, width, height, note);
   }
 
-  public static void viewAllParcels(){
-    
-  }
-
   public static void main(String[] args){
     System.out.println("\nSimple Inventory Management System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
 
     boolean isExit = false;
 
-    while(isExit){
+    while(!isExit){
       Display.headerTitle("Menu");
       Display.displayMenu("Add Parcel", "View All Parcels", "Change Delivery", "Mark as Delivered", "Exit");
       int menu = Validations.menuChecker("Enter Menu Choice (1, 2, 3, 4, 5): ", 5);
 
       switch(menu){
         case 1 -> addParcel();
-        case 2 -> viewAllParcels();
-        case 3 -> changeDeliveryService();
-        case 4 -> markAsDelivered();
-        case 5 -> isDone = true;
+        case 2 -> Display.viewAllParcels(parcels);
+        //case 3 -> changeDeliveryService();
+        //case 4 -> markAsDelivered();
+        case 5 -> isExit = true;
       }
     }
     System.out.println("Thank you for using Simple Inventory Management System by Ma. Angelica Pauleen R. De Chavez of C2A\n");

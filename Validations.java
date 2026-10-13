@@ -76,7 +76,7 @@ public class Validations {
         weight = Double.parseDouble(number);
 
         if(weight <= 70){
-          System.out.println("Invalid input. Please enter a number between 1 to " + max + ".");
+          System.out.println("Invalid input. Please enter a number between 1 to 70.");
         }else{isValidWeight = true;}
       }catch(NumberFormatException e){
         System.out.println("Invalid input. You must enter a number.");

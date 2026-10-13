@@ -1,9 +1,14 @@
+import model.Parcel;
+//import Items;
+
+import java.util.ArrayList;
+
 public class Display {
   public static final int MENU_WIDTH = 60;
   public static void displayMenu(String ... choices){
     String lightLine = "-".repeat(MENU_WIDTH);
     for (int i = 0; i < choices.length; i++) {
-        System.out.printf("  [%d] %s%n", i++, choices[i]);
+        System.out.printf("  [%d] %s%n", i + 1, choices[i]);
     }
 
     System.out.println(lightLine);
@@ -31,8 +36,13 @@ public class Display {
         System.out.println();
   }
 
-  public static void viewAllParcels(){
+  public static void viewAllParcels(ArrayList<Parcel> parcels){
     headerTitle("View All Parcels");
-    System.out.printf("%n-10s | -10%s | -10%s | -10%.2f | -10%s | -10%,.2f | -10%s%n");
+    System.out.printf("%n-10s | -10%s | -10%s | -10%s | -10%s | -10%s | -10%s%n", "TRACKING NUMBER", "PARCEL TYPE", "RECEIVER", "CHARGEABLE WEIGHT", "SERVICE", "DELIVERY FEE", "STATUS");
+
+    for(Parcel parcel : parcels){
+      System.out.printf("%n-10s | -10%s | -10%s | -10%.2f | -10%s | -10%,.2f | -10%s%n", parcel.getTrackingNum(), parcel.getType(), parcel.getName(), parcel.getChargeableWeight(), parcel.getDeliveryService(), parcel.getDeliveryFee(null), parcel.getStatus());
+    }
+
   }
 }

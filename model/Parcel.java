@@ -9,6 +9,7 @@ public abstract class Parcel {
   private double weight;
   private DeliveryService deliveryService;
   private Status status;
+  private double deliveryFee;
 
   public Parcel(String trackingNum, String name, double weight){
     this.trackingNum = trackingNum;
@@ -24,9 +25,10 @@ public abstract class Parcel {
   public double getWeight(){return this.weight;}
 
   public String getStatus(){return this.status.toString();}
-  public String getDeliveryType(){return deliveryService.toString();}
+  public String getDeliveryService(){return deliveryService.toString();}
 
   public double getDeliveryFee(DeliveryStrategy delivery){return delivery.computeDeliveryFee(this);}
+  public void setDeliveryFee(double deliveryFee){this.deliveryFee = deliveryFee;}
 
   //setters
   public void setDeliveryStatus(){this.status = Status.DELIVERED;}
