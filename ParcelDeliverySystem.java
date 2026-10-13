@@ -7,10 +7,14 @@ import model.Document;
 import model.Fragile;
 import model.Parcel;
 import model.Status;
+
 import strategy.ExpressDelivery;
 import strategy.SameDayDelivery;
 import strategy.StandardDelivery;
 import strategy.DeliveryStrategy;
+
+import organize.Display;
+import organize.Validations;
 
 public class ParcelDeliverySystem{
 
