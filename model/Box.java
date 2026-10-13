@@ -20,6 +20,23 @@ public class Box extends Parcel {
   public int getWidth(){return this.width;}
   public int getHeight(){return this.height;}
 
+  @Override 
+  public double getBaseFee(){
+    return 40 * getChargeableWeight();
+  }
+
+  @Override 
+  public double getChargeableWeight(){
+    double actualWeight = Math.ceil(this.getWeight());
+    double volumetricWeight = Math.ceil(getVolumetricWeight());
+    return Math.max(actualWeight, volumetricWeight);
+  }
+
+  @Override
+  public double getMaxWeight(){
+    return 50;
+  }
+
   public double getVolumetricWeight(){
     return (this.length + this.width + this.height)/3500;
   }
