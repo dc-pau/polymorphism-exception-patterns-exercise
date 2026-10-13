@@ -5,7 +5,7 @@ import model.Parcel;
 //IMPLEMENTS DeliveryStrategy
 public class ExpressDelivery implements DeliveryStrategy{
   @Override
-  public double computeFee(Parcel parcel){
+  public double computeDeliveryFee(Parcel parcel){
     return parcel.getBaseFee() * 1.5;
   }
 

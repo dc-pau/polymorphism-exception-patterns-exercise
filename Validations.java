@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Validations {
   public static Scanner input = new Scanner(System.in);
 
-  public static int menuChecker(String prompt){
+  public static int menuChecker(String prompt, int max){
     boolean isValidMenu = false;
     int menu = 0;
 
@@ -24,10 +24,10 @@ public class Validations {
       try{
         menu = Integer.parseInt(number);
 
-        if(menu >= 1 && menu <= 9){
+        if(menu >= 1 && menu <= max){
           isValidMenu = true;
         }else{
-          System.out.println("Invalid input. Please enter a number between 1 to 9.");
+          System.out.println("Invalid input. Please enter a number between 1 to " + max + ".");
         }
       }catch(NumberFormatException e){
         System.out.println("Invalid input. You must enter an integer number.");
@@ -36,7 +36,7 @@ public class Validations {
     return menu;
   }
 
-  public static String stringEmptyChecker(String prompt, String regex, int type){
+  public static String stringEmptyChecker(String prompt){
     boolean hasInput = false;
     String str = " ";
 
@@ -52,5 +52,36 @@ public class Validations {
       }
     }
     return str;
+  }
+
+  public static double weightChecker(String prompt){
+    boolean isValidWeight = false;
+    double weight = 0;
+
+    while(!isValidWeight){
+      System.out.print(prompt);
+      String number = input.nextLine();
+
+      if(number.length() > 1 && !(Character.isLetterOrDigit(number.charAt(0)))){
+        System.out.println("Invalid input. Number cannot start with a symbol or space.");
+        continue;
+      }
+
+      if(number.length() > 1 && number.charAt(0) == '0' && number.charAt(1) != '.'){
+        System.out.println("Invalid input. Number cannot start with 0.");
+        continue;
+      }
+
+      try{
+        weight = Double.parseDouble(number);
+
+        if(weight <= 70){
+          System.out.println("Invalid input. Please enter a number between 1 to " + max + ".");
+        }else{isValidWeight = true;}
+      }catch(NumberFormatException e){
+        System.out.println("Invalid input. You must enter a number.");
+      }
+    }
+    return weight;
   }
 }

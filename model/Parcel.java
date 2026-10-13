@@ -1,17 +1,21 @@
 package model;
 
+import strategy.DeliveryStrategy;
+
 //PARENT CLASS OF DOCUMENT AND BOX
 public abstract class Parcel {
   private String trackingNum;
   private String name;
   private double weight;
   private DeliveryService deliveryService;
-  private Status status = Status.PENDING;
+  private Status status;
 
   public Parcel(String trackingNum, String name, double weight){
     this.trackingNum = trackingNum;
     this.name = name;
     this.weight = weight;
+
+    this.status = Status.PENDING;
   }
 
   //getters
@@ -21,6 +25,8 @@ public abstract class Parcel {
 
   public String getStatus(){return this.status.toString();}
   public String getDeliveryType(){return deliveryService.toString();}
+
+  public double getDeliveryFee(DeliveryStrategy delivery){return delivery.computeDeliveryFee(this);}
 
   //setters
   public void setDeliveryStatus(){this.status = Status.DELIVERED;}

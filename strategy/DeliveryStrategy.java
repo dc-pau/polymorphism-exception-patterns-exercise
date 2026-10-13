@@ -4,7 +4,7 @@ import model.Parcel;
 
 //INTERFACE
 public interface DeliveryStrategy {
-  double computeFee(Parcel parcel);
+  double computeDeliveryFee(Parcel parcel);
   boolean isValidParcel(Parcel parcel);
   String getService();
 }
