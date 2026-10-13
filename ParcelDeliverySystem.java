@@ -16,8 +16,6 @@ public class ParcelDeliverySystem{
 
   public static Scanner input = new Scanner(System.in);
 
-  public static Items item = new Items();
-
   public static ArrayList<Parcel> parcels = new ArrayList<>();
 
   public static void addParcel(){
