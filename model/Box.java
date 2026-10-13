@@ -19,4 +19,8 @@ public class Box extends Parcel {
   public int getLength(){return this.length;}
   public int getWidth(){return this.width;}
   public int getHeight(){return this.height;}
+
+  public double getVolumetricWeight(){
+    return (this.length + this.width + this.height)/3500;
+  }
 }

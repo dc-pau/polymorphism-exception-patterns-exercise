@@ -11,4 +11,19 @@ public class Document extends Parcel{
   }
 
   public int getPages(){return this.pages;}
+  
+  @Override 
+  public double getBaseFee(){
+    return 50;
+  }
+
+  @Override 
+  public double getChargeableWeight(){
+    return this.getWeight();
+  }
+
+  @Override
+  public double getMaxWeight(){
+    return 0.5;
+  }
 }
