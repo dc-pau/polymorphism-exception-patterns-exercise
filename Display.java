@@ -51,4 +51,15 @@ public class Display {
     }
 
   }
+
+  public static void displayParcel(Parcel parcel, String[][] details){
+    String lightLine = "-".repeat(MENU_WIDTH);
+    headerTitle("Parcel Details");
+
+    for(String[] detail : details) {
+      System.out.printf(" %-30s : %s%n", detail[0], detail[1]);
+    }
+
+    System.out.println(lightLine);
+  }
 }

@@ -101,4 +101,36 @@ public class Validations {
     }
     return false;
   }
+
+  public static char charValidation(String prompt){
+        boolean isValidChar = false;
+        char ans = ' ';
+
+        while(!isValidChar){
+          System.out.print(prompt);
+          String txt = input.nextLine();
+
+          if(txt.isEmpty()){
+            System.out.println("Invalid input. You cannot leave this empty.");
+            continue;
+          }
+
+          if(txt.length() > 1){
+            System.out.println("Invalid input. Enter y or n only.");
+            continue;
+          }
+
+          char char1 = Character.toLowerCase(txt.charAt(0));
+
+          if(!((char1 == 'y') || (char1 == 'n'))){
+            System.out.println("Invalid input. Enter y or n only.");
+            continue;
+          }else{
+            ans = char1;
+            isValidChar = true;
+          }
+          
+        }
+        return ans;
+    }
 }

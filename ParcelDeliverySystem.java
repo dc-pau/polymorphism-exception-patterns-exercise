@@ -134,7 +134,7 @@ public class ParcelDeliverySystem{
       return;
     }
 
-    Parcel parcel = parcelItemUsingTrackingNum(trackingNum);
+    Parcel parcel = getParcelItemUsingTrackingNum(trackingNum);
     if(parcel.getStatus().equalsIgnoreCase(Status.DELIVERED.toString())){
       System.out.println("Parcel already delivered!");
       return;
@@ -178,13 +178,44 @@ public class ParcelDeliverySystem{
     System.out.printf("Delivery service changed! New fee: Php %,.2f%n", deliveryFee);
   }
 
-  public static Parcel parcelItemUsingTrackingNum(String trackingNum){
+  public static Parcel getParcelItemUsingTrackingNum(String trackingNum){
     for(Parcel parcel : parcels){
       if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){
         return parcel;
       }
     }
     return null;
+  }
+
+  public static void markAsDelivered(){
+    Display.headerTitle("Mark As Delivered");
+    if(parcels.isEmpty()){
+      System.out.println("No parcels available.");
+      return;
+    }
+
+    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
+    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+
+    while(!Validations.validTrackingNum(trackingNum)){
+      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
+      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+    }
+
+    if(!Validations.trackingNumExists(parcels, trackingNum)){
+      System.out.println("Parcel not found!");
+      return;
+    }
+
+    Parcel parcel = getParcelItemUsingTrackingNum(trackingNum);
+    if(parcel.isDelivered()){
+      System.out.println("Parcel was already delivered.");
+      return;
+    }
+
+    parcel.setDeliveryStatus();
+    System.out.println("Parcel delivered successfully!");
+
   }
 
   public static void main(String[] args){
@@ -201,7 +232,7 @@ public class ParcelDeliverySystem{
         case 1 -> addParcel();
         case 2 -> Display.viewAllParcels(parcels);
         case 3 -> changeDeliveryService();
-        //case 4 -> markAsDelivered();
+        case 4 -> markAsDelivered();
         case 5 -> isExit = true;
       }
     }
