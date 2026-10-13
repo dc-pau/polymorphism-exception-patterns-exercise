@@ -9,6 +9,11 @@ public class Fragile extends Box{
     this.handlingNote = note;
   }
 
+  public String getHandlingNote(){return this.handlingNote;}
+
+  @Override 
+  public String getType(){return "Fragile";}
+
   @Override 
   public double getBaseFee(){
     return super.getBaseFee() + 100;
@@ -29,6 +34,4 @@ public class Fragile extends Box{
   public double getVolumetricWeight(){
     return super.getVolumetricWeight();
   }
-
-  public String getHandlingNote(){return this.handlingNote;}
 }

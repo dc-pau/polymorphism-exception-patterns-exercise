@@ -30,4 +30,9 @@ public class Display {
                                 MENU_WIDTH - dashCount - subHeader.length())));
         System.out.println();
   }
+
+  public static void viewAllParcels(){
+    headerTitle("View All Parcels");
+    System.out.printf("%n-10s | -10%s | -10%s | -10%.2f | -10%s | -10%,.2f | -10%s%n");
+  }
 }

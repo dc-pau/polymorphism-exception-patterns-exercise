@@ -36,6 +36,7 @@ public abstract class Parcel {
   //public Status setStatus(){}
 
   //abstracts
+  public abstract String getType();
   public abstract double getBaseFee();
   public abstract double getChargeableWeight();
   public abstract double getMaxWeight();

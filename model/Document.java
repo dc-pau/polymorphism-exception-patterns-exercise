@@ -13,6 +13,9 @@ public class Document extends Parcel{
   public int getPages(){return this.pages;}
   
   @Override 
+  public String getType(){return "Document";}
+  
+  @Override 
   public double getBaseFee(){
     return 50;
   }

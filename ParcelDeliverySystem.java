@@ -84,6 +84,11 @@ public class ParcelDeliverySystem{
     String note = Validations.stringEmptyChecker("Enter note (put N/A if none): ");
     return new Fragile(trackingNum, name, weight, length, width, height, note);
   }
+
+  public static void viewAllParcels(){
+    
+  }
+
   public static void main(String[] args){
     System.out.println("\nSimple Inventory Management System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
 

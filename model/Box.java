@@ -20,6 +20,10 @@ public class Box extends Parcel {
   public int getWidth(){return this.width;}
   public int getHeight(){return this.height;}
 
+
+  @Override 
+  public String getType(){return "Box";}
+
   @Override 
   public double getBaseFee(){
     return 40 * getChargeableWeight();
