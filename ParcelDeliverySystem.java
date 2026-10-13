@@ -55,6 +55,17 @@ public class ParcelDeliverySystem{
       default -> throw new IllegalArgumentException("Invalid delivery service");
     };
 
+    //SET DELIVERY SERVICE
+    DeliveryService service = switch(serviceChoice){
+      case 1 -> DeliveryService.STANDARD;
+      case 2 -> DeliveryService.EXPRESS;
+      case 3 -> DeliveryService.SAME_DAY;
+      default -> throw new IllegalArgumentException();
+    };
+
+    parcel.setDeliveryService(service);
+
+    //CALCULATE DELIVERY FEE
     DeliveryStrategy delivery = switch(serviceChoice){
       case 1 -> new StandardDelivery();
       case 2 -> new ExpressDelivery();
@@ -65,11 +76,11 @@ public class ParcelDeliverySystem{
     double deliveryFee = parcel.getDeliveryFee(delivery);
     parcel.setDeliveryFee(deliveryFee);
     parcels.add(parcel);
-    System.out.printf("Parcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
+    System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
   }
 
   public static Document addDocument(String trackingNum, String name, double weight){
-    int pages = Validations.menuChecker("Enter number of pages", 100);
+    int pages = Validations.menuChecker("Enter number of pages: ", 100);
     return new Document(trackingNum, name, weight, pages);
   }
 

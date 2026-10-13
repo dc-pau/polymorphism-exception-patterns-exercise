@@ -4,7 +4,7 @@ import model.Parcel;
 import java.util.ArrayList;
 
 public class Display {
-  public static final int MENU_WIDTH = 60;
+  public static final int MENU_WIDTH = 121;
   public static void displayMenu(String ... choices){
     String lightLine = "-".repeat(MENU_WIDTH);
     for (int i = 0; i < choices.length; i++) {
@@ -37,11 +37,17 @@ public class Display {
   }
 
   public static void viewAllParcels(ArrayList<Parcel> parcels){
+    String lightLine = "-".repeat(MENU_WIDTH);
     headerTitle("View All Parcels");
-    System.out.printf("%n-10s | -10%s | -10%s | -10%s | -10%s | -10%s | -10%s%n", "TRACKING NUMBER", "PARCEL TYPE", "RECEIVER", "CHARGEABLE WEIGHT", "SERVICE", "DELIVERY FEE", "STATUS");
+    if(parcels.isEmpty()){
+      System.out.println("No parcels available.");
+      return;
+    }
 
+    System.out.printf( "%n%-20s  %-15s  %-15s  %-20s  %-15s  %-14s  %-10s%n%n", "TRACKING NUMBER", "PARCEL TYPE", "RECEIVER", "CHARGEABLE WEIGHT", "SERVICE", "DELIVERY FEE", "STATUS");
+    System.out.println(lightLine);
     for(Parcel parcel : parcels){
-      System.out.printf("%n-10s | -10%s | -10%s | -10%.2f | -10%s | -10%,.2f | -10%s%n", parcel.getTrackingNum(), parcel.getType(), parcel.getName(), parcel.getChargeableWeight(), parcel.getDeliveryService(), parcel.getDeliveryFee(null), parcel.getStatus());
+      System.out.printf("%n%-20s  %-15s  %-15s  %-20.2f  %-15s  %-,14.2f  %-10s%n", parcel.getTrackingNum(), parcel.getType(), parcel.getName(), parcel.getChargeableWeight(), parcel.getDeliveryService(), parcel.getStoredDeliveryFee(), parcel.getStatus());
     }
 
   }

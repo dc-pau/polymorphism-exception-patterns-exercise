@@ -29,6 +29,9 @@ public abstract class Parcel {
 
   public double getDeliveryFee(DeliveryStrategy delivery){return delivery.computeDeliveryFee(this);}
   public void setDeliveryFee(double deliveryFee){this.deliveryFee = deliveryFee;}
+  public double getStoredDeliveryFee(){
+    return this.deliveryFee;
+  }
 
   //setters
   public void setDeliveryStatus(){this.status = Status.DELIVERED;}
