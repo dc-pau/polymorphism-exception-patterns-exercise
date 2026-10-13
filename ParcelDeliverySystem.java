@@ -6,7 +6,7 @@ import model.DeliveryService;
 import model.Document;
 import model.Fragile;
 import model.Parcel;
-
+import model.Status;
 import strategy.ExpressDelivery;
 import strategy.SameDayDelivery;
 import strategy.StandardDelivery;
@@ -40,20 +40,35 @@ public class ParcelDeliverySystem{
     double weight = Validations.weightChecker(String.format("Enter %s's weight: ", parcelType));
 
     //ADD TRACKING NUMBER
-    String trackingNum = "ABC123";
+    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
+    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+
+    while(!Validations.validTrackingNum(trackingNum)){
+      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
+      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+    }
+
+    while(Validations.trackingNumExists(parcels, trackingNum)){
+      System.out.println("Tracking Number already exists. Use another tracking number.");
+      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+    }
+
+    Parcel parcel = switch(chooseParcel){
+      case 1 -> addDocument(trackingNum, receiversName, weight);
+      case 2 -> addBox(trackingNum, receiversName, weight);
+      case 3 -> addFragile(trackingNum, receiversName, weight);
+      default -> throw new IllegalArgumentException("Invalid parcel.");
+    };
 
     //delivery service -> express, standard, same day
     Display.subHeaderTitle("Delivery Service");
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
     int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
 
-
-    Parcel parcel = switch(chooseParcel){
-      case 1 -> addDocument(trackingNum, receiversName, weight);
-      case 2 -> addBox(trackingNum, receiversName, weight);
-      case 3 -> addFragile(trackingNum, receiversName, weight);
-      default -> throw new IllegalArgumentException("Invalid delivery service");
-    };
+    while(parcel.getChargeableWeight() <= 10 && serviceChoice == 3){
+      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
+      serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
+    }
 
     //SET DELIVERY SERVICE
     DeliveryService service = switch(serviceChoice){
@@ -99,6 +114,79 @@ public class ParcelDeliverySystem{
     return new Fragile(trackingNum, name, weight, length, width, height, note);
   }
 
+  public static void changeDeliveryService(){
+    Display.headerTitle("Change Delivery Service");
+    if(parcels.isEmpty()){
+      System.out.println("No parcels available.");
+      return;
+    }
+
+    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
+    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+
+    while(!Validations.validTrackingNum(trackingNum)){
+      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
+      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+    }
+
+    if(!Validations.trackingNumExists(parcels, trackingNum)){
+      System.out.println("Parcel not found!");
+      return;
+    }
+
+    Parcel parcel = parcelItemUsingTrackingNum(trackingNum);
+    if(parcel.getStatus().equalsIgnoreCase(Status.DELIVERED.toString())){
+      System.out.println("Parcel already delivered!");
+      return;
+    }
+
+    Display.subHeaderTitle("Delivery Service");
+    Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
+    int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
+
+    if(parcel.getChargeableWeight() <= 10 && serviceChoice == 3){
+      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
+      System.out.println("The parcel remains on " + parcel.getDeliveryService() + " delivery.");
+      return;
+    }
+
+    //SET DELIVERY SERVICE
+    DeliveryService service = switch(serviceChoice){
+      case 1 -> DeliveryService.STANDARD;
+      case 2 -> DeliveryService.EXPRESS;
+      case 3 -> DeliveryService.SAME_DAY;
+      default -> throw new IllegalArgumentException();
+    };
+
+    if(parcel.getDeliveryService().equalsIgnoreCase(service.toString())){
+      System.out.println("This parcel is already set to " + service + ". No changes made.");
+      return;
+    }
+
+    parcel.setDeliveryService(service);
+
+    //CALCULATE DELIVERY FEE
+    DeliveryStrategy delivery = switch(serviceChoice){
+      case 1 -> new StandardDelivery();
+      case 2 -> new ExpressDelivery();
+      case 3 -> new SameDayDelivery();
+      default -> throw new IllegalArgumentException();
+    };
+
+    double deliveryFee = parcel.getDeliveryFee(delivery);
+    parcel.setDeliveryFee(deliveryFee);
+    System.out.printf("Delivery service changed! New fee: Php %,.2f%n", deliveryFee);
+  }
+
+  public static Parcel parcelItemUsingTrackingNum(String trackingNum){
+    for(Parcel parcel : parcels){
+      if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){
+        return parcel;
+      }
+    }
+    return null;
+  }
+
   public static void main(String[] args){
     System.out.println("\nSimple Inventory Management System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
 
@@ -112,7 +200,7 @@ public class ParcelDeliverySystem{
       switch(menu){
         case 1 -> addParcel();
         case 2 -> Display.viewAllParcels(parcels);
-        //case 3 -> changeDeliveryService();
+        case 3 -> changeDeliveryService();
         //case 4 -> markAsDelivered();
         case 5 -> isExit = true;
       }

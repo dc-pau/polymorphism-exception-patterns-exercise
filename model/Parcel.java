@@ -43,7 +43,7 @@ public abstract class Parcel {
   //abstracts
   public abstract String getType();
   public abstract double getBaseFee();
-  public abstract double getChargeableWeight();
+  public abstract int getChargeableWeight();
   public abstract double getMaxWeight();
 
 }

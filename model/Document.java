@@ -14,15 +14,15 @@ public class Document extends Parcel{
   
   @Override 
   public String getType(){return "Document";}
-  
+
   @Override 
   public double getBaseFee(){
     return 50;
   }
 
   @Override 
-  public double getChargeableWeight(){
-    return this.getWeight();
+  public int getChargeableWeight(){
+    return (int) this.getWeight();
   }
 
   @Override

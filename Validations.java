@@ -1,4 +1,8 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
+import model.Parcel;
+
 
 public class Validations {
   public static Scanner input = new Scanner(System.in);
@@ -83,5 +87,18 @@ public class Validations {
       }
     }
     return weight;
+  }
+
+  public static boolean validTrackingNum(String trackingnNum){
+    return trackingnNum.matches("^(?i)ABC\\d{4}$") ? true : false;
+  }
+
+  public static boolean trackingNumExists(ArrayList<Parcel> parcels, String trackingNum){
+    for(Parcel parcel : parcels){
+      if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){
+        return true;
+      }
+    }
+    return false;
   }
 }

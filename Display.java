@@ -47,7 +47,7 @@ public class Display {
     System.out.printf( "%n%-20s  %-15s  %-15s  %-20s  %-15s  %-14s  %-10s%n%n", "TRACKING NUMBER", "PARCEL TYPE", "RECEIVER", "CHARGEABLE WEIGHT", "SERVICE", "DELIVERY FEE", "STATUS");
     System.out.println(lightLine);
     for(Parcel parcel : parcels){
-      System.out.printf("%n%-20s  %-15s  %-15s  %-20.2f  %-15s  %-,14.2f  %-10s%n", parcel.getTrackingNum(), parcel.getType(), parcel.getName(), parcel.getChargeableWeight(), parcel.getDeliveryService(), parcel.getStoredDeliveryFee(), parcel.getStatus());
+      System.out.printf("%n%-20s  %-15s  %-15s  %-20s  %-15s  %-14s  %-10s%n", parcel.getTrackingNum(), parcel.getType(), parcel.getName(), String.format("%s kg", String.valueOf(parcel.getChargeableWeight())), parcel.getDeliveryService(), String.format("Php %,.2f", parcel.getStoredDeliveryFee()), parcel.getStatus());
     }
 
   }
