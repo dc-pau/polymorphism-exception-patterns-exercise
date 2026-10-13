@@ -38,6 +38,6 @@ public class Box extends Parcel {
   }
 
   public double getVolumetricWeight(){
-    return (this.length + this.width + this.height)/3500;
+    return (this.length * this.width * this.height)/3500;
   }
 }
