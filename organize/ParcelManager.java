@@ -26,4 +26,18 @@ public class ParcelManager {
     return false;
   }
 
+  public void addParcel(Parcel parcel) throws DuplicateTrackingNumberException{
+    if(trackNumExists(parcel.getTrackingNum())){
+      throw new DuplicateTrackingNumberException("Tracking Number already exists.");
+    }
+    parcels.add(parcel);
+  }
+
+  public Parcel findParcel(String trackingNum) throws ParcelNotFoundException{
+    for(Parcel parcel : parcels){
+      if(trackNumExists(trackingNum)){return parcel;}
+    }
+
+    return ParcelNotFoundException("Parcel not found!");
+  }
 }
