@@ -219,7 +219,7 @@ public class ParcelDeliverySystem{
   }
 
   public static void main(String[] args){
-    System.out.println("\nSimple Inventory Management System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
+    System.out.println("\nSimple Parcel Delivery System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
 
     boolean isExit = false;
 
@@ -236,6 +236,6 @@ public class ParcelDeliverySystem{
         case 5 -> isExit = true;
       }
     }
-    System.out.println("Thank you for using Simple Inventory Management System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
+    System.out.println("Thank you for using Simple Parcel Delivery System by Ma. Angelica Pauleen R. De Chavez of C2A\n");
   }
 }
