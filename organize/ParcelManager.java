@@ -1,13 +1,12 @@
 package organize;
 
 import model.Parcel;
-import java.util.List;
 import java.util.ArrayList;
 
 public class ParcelManager {
   private static ParcelManager instance;
 
-  private List<Parcel> parcel = new ArrayList<>();
+  private ArrayList<Parcel> parcels = new ArrayList<>();
 
   private ParcelManager(){}
 
@@ -19,5 +18,12 @@ public class ParcelManager {
     return instance;
   }
 
-  
+  public ArrayList<Parcel> getAllParcels(){return parcels;}
+  public boolean trackNumExists(String trackingNum){
+    for(Parcel parcel : parcels){
+      if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){return true;}
+    }
+    return false;
+  }
+
 }
