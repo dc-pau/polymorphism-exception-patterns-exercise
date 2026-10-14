@@ -64,22 +64,24 @@ public class ParcelDeliverySystem{
     //delivery service -> express, standard, same day
     Display.subHeaderTitle("Delivery Service");
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
-    int serviceChoice = Validations.menuChecker("Choose your desired delivery service (1, 2, 3): ", 3);
 
-    DeliveryStrategy delivery = switch(serviceChoice){
+    int serviceChoice = 0;
+    DeliveryStrategy delivery = null;
+    boolean isValidDelivery = false;
+    while(!isValidDelivery){
+      serviceChoice = Validations.menuChecker("Choose your desired delivery service (1, 2, 3): ", 3);
+
+      delivery = switch(serviceChoice){
       case 1 -> new StandardDelivery();
       case 2 -> new ExpressDelivery();
       case 3 -> new SameDayDelivery();
-      default -> throw new IllegalArgumentException();
+      default -> throw new IllegalArgumentException("Invalid service.");
     };
 
-    boolean isValidDelivery = false;
-    while(!isValidDelivery){
-      if(delivery.isValidParcel(parcel)){
-        isValidDelivery = true;
-      }
-      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
-      serviceChoice = Validations.menuChecker("Choose your desired delivery service (1, 2, 3): ", 3);
+      if(!delivery.isValidParcel(parcel)){
+        System.out.println("Same Day delivery is only for parcels up to 10kg!");
+      }else{isValidDelivery = true;}
+
     }
 
     DeliveryService service = switch(serviceChoice){
@@ -100,41 +102,6 @@ public class ParcelDeliverySystem{
     }catch(DuplicateTrackingNumberException e){
       System.out.println(e.getMessage());
     }
-
-
-
-    /*DeliveryStrategy delivery = switch(serviceChoice){
-      case 1 -> new StandardDelivery();
-      case 2 -> new ExpressDelivery();
-      case 3 -> new SameDayDelivery();
-      default -> throw new IllegalArgumentException();
-    };
-
-    while(!delivery.isValidParcel(parcel)){
-      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
-      serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
-    }
-
-    //SET DELIVERY SERVICE
-    DeliveryService service = switch(serviceChoice){
-      case 1 -> DeliveryService.STANDARD;
-      case 2 -> DeliveryService.EXPRESS;
-      case 3 -> DeliveryService.SAME_DAY;
-      default -> throw new IllegalArgumentException();
-    };
-
-    parcel.setDeliveryService(service);
-
-    double deliveryFee = parcel.getDeliveryFee(delivery);
-    parcel.setDeliveryFee(deliveryFee);
-
-    try{
-      manager.addParcelItem(parcel);
-    }catch(DuplicateTrackingNumberException e){
-      System.out.println(e.getMessage());
-    }
-
-    System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);*/
   }
 
   private static String readTrackingNum(){
