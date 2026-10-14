@@ -199,11 +199,6 @@ public class ParcelDeliverySystem{
 
     String trackingNum = readTrackingNum();
 
-    if(ParcelManager.getInstance().trackingNumExists(trackingNum)){
-      System.out.println("Parcel not found!");
-      return;
-    }
-
     try{
       Parcel parcel = manager.findParcel(trackingNum);
 
