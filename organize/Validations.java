@@ -1,9 +1,6 @@
 package organize;
 
 import java.util.Scanner;
-import java.util.ArrayList;
-
-import model.Parcel;
 
 
 public class Validations {
