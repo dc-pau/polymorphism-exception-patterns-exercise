@@ -95,15 +95,6 @@ public class Validations {
     return trackingnNum.matches("^(?i)ABC\\d{4}$") ? true : false;
   }
 
-  public static boolean trackingNumExists(ArrayList<Parcel> parcels, String trackingNum){
-    for(Parcel parcel : parcels){
-      if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){
-        return true;
-      }
-    }
-    return false;
-  }
-
   public static char charValidation(String prompt){
         boolean isValidChar = false;
         char ans = ' ';

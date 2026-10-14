@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.DuplicateFormatFlagsException;
 
 import model.Box;
 import model.DeliveryService;
@@ -15,12 +16,15 @@ import strategy.DeliveryStrategy;
 
 import organize.Display;
 import organize.Validations;
+import organize.ParcelManager;
+import organize.ParcelNotFoundException;
+import organize.DuplicateTrackingNumberException;
 
 public class ParcelDeliverySystem{
 
   public static Scanner input = new Scanner(System.in);
 
-  public static ArrayList<Parcel> parcels = new ArrayList<>();
+  private static final ParcelManager manager = ParcelManager.getInstance();
 
   public static void addParcel(){
     Display.headerTitle("Add Parcel");
@@ -50,7 +54,7 @@ public class ParcelDeliverySystem{
       trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
     }
 
-    while(Validations.trackingNumExists(parcels, trackingNum)){
+    while(ParcelManager.getInstance().trackingNumExists(trackingNum)){
       System.out.println("Tracking Number already exists. Use another tracking number.");
       trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
     }
@@ -92,7 +96,13 @@ public class ParcelDeliverySystem{
 
     double deliveryFee = parcel.getDeliveryFee(delivery);
     parcel.setDeliveryFee(deliveryFee);
-    parcels.add(parcel);
+
+    try{
+      manager.addParcelItem(parcel);
+    }catch(DuplicateTrackingNumberException e){
+      System.out.println(e.getMessage());
+    }
+
     System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
   }
 
@@ -118,7 +128,7 @@ public class ParcelDeliverySystem{
 
   public static void changeDeliveryService(){
     Display.headerTitle("Change Delivery Service");
-    if(parcels.isEmpty()){
+    if(manager.getAllParcels().isEmpty()){
       System.out.println("No parcels available.");
       return;
     }
@@ -131,12 +141,12 @@ public class ParcelDeliverySystem{
       trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
     }
 
-    if(!Validations.trackingNumExists(parcels, trackingNum)){
+    if(ParcelManager.getInstance().trackingNumExists(trackingNum)){
       System.out.println("Parcel not found!");
       return;
     }
 
-    Parcel parcel = getParcelItemUsingTrackingNum(trackingNum);
+    Parcel parcel = manager.findParcel(trackingNum);
     if(parcel.getStatus().equalsIgnoreCase(Status.DELIVERED.toString())){
       System.out.println("Parcel already delivered!");
       return;
@@ -180,18 +190,9 @@ public class ParcelDeliverySystem{
     System.out.printf("Delivery service changed! New fee: Php %,.2f%n", deliveryFee);
   }
 
-  public static Parcel getParcelItemUsingTrackingNum(String trackingNum){
-    for(Parcel parcel : parcels){
-      if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){
-        return parcel;
-      }
-    }
-    return null;
-  }
-
   public static void markAsDelivered(){
     Display.headerTitle("Mark As Delivered");
-    if(parcels.isEmpty()){
+    if(manager.getAllParcels().isEmpty()){
       System.out.println("No parcels available.");
       return;
     }
@@ -204,19 +205,24 @@ public class ParcelDeliverySystem{
       trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
     }
 
-    if(!Validations.trackingNumExists(parcels, trackingNum)){
+    if(ParcelManager.getInstance().trackingNumExists(trackingNum)){
       System.out.println("Parcel not found!");
       return;
     }
 
-    Parcel parcel = getParcelItemUsingTrackingNum(trackingNum);
-    if(parcel.isDelivered()){
+    try{
+      Parcel parcel = manager.findParcel(trackingNum);
+
+      if(parcel.isDelivered()){
       System.out.println("Parcel was already delivered.");
       return;
     }
 
     parcel.setDeliveryStatus();
     System.out.println("Parcel delivered successfully!");
+    }catch(ParcelNotFoundException e){
+      System.out.println(e.getMessage());
+    };
 
   }
 
@@ -232,7 +238,7 @@ public class ParcelDeliverySystem{
 
       switch(menu){
         case 1 -> addParcel();
-        case 2 -> Display.viewAllParcels(parcels);
+        case 2 -> Display.viewAllParcels(manager.getAllParcels());
         case 3 -> changeDeliveryService();
         case 4 -> markAsDelivered();
         case 5 -> isExit = true;

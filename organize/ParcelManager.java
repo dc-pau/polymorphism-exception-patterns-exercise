@@ -19,15 +19,15 @@ public class ParcelManager {
   }
 
   public ArrayList<Parcel> getAllParcels(){return parcels;}
-  public boolean trackNumExists(String trackingNum){
+  public boolean trackingNumExists(String trackingNum){
     for(Parcel parcel : parcels){
       if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){return true;}
     }
     return false;
   }
 
-  public void addParcel(Parcel parcel) throws DuplicateTrackingNumberException{
-    if(trackNumExists(parcel.getTrackingNum())){
+  public void addParcelItem(Parcel parcel) throws DuplicateTrackingNumberException{
+    if(trackingNumExists(parcel.getTrackingNum())){
       throw new DuplicateTrackingNumberException("Tracking Number already exists.");
     }
     parcels.add(parcel);
@@ -35,9 +35,9 @@ public class ParcelManager {
 
   public Parcel findParcel(String trackingNum) throws ParcelNotFoundException{
     for(Parcel parcel : parcels){
-      if(trackNumExists(trackingNum)){return parcel;}
+      if(parcel.getTrackingNum().equalsIgnoreCase(trackingNum)){return parcel;}
     }
 
-    return ParcelNotFoundException("Parcel not found!");
+    throw new ParcelNotFoundException("Parcel not found!");
   }
 }
