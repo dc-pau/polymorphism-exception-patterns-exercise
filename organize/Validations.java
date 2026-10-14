@@ -57,7 +57,7 @@ public class Validations {
     return str;
   }
 
-  public static double weightChecker(String prompt){
+  public static double weightChecker(String prompt, double max){
     boolean isValidWeight = false;
     double weight = 0;
 
@@ -78,8 +78,8 @@ public class Validations {
       try{
         weight = Double.parseDouble(number);
 
-        if(!(weight >= 0 || weight <= 70)){
-          System.out.println("Invalid input. Please enter a number between 0 to 70.");
+        if(!(weight >= 0 || weight <= max)){
+          System.out.println("Invalid input. Please enter a number between 0 to " + max + ".");
         }else{isValidWeight = true;}
       }catch(NumberFormatException e){
         System.out.println("Invalid input. You must enter a number.");

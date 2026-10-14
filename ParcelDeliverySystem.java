@@ -32,16 +32,22 @@ public class ParcelDeliverySystem{
     int chooseParcel = Validations.menuChecker("Enter Parcel Type (1, 2, 3): ", 3);
 
     String parcelType = "";
+    double maxWeight = 0;
     switch(chooseParcel){
-      case 1 -> parcelType = "Document";
-      case 2 -> parcelType = "Box";
-      case 3 -> parcelType = "Fragile";
+      case 1 : parcelType = "Document"; maxWeight = 0.5; break;
+      case 2 : parcelType = "Box"; maxWeight = 50; break;
+      case 3 : parcelType = "Fragile"; maxWeight = 30; break;
+      default : throw new IllegalArgumentException("Invalid Parcel Type");
     }
 
     Display.subHeaderTitle(parcelType);
 
+    System.out.println("Fill out the following information:");
     String receiversName = Validations.stringEmptyChecker("Receiver's Name: ");
-    double weight = Validations.weightChecker(String.format("Enter %s's weight: ", parcelType));
+
+
+    System.out.println("");
+    double weight = Validations.weightChecker(String.format("Enter %s's weight (max. %f): ", parcelType, maxWeight), maxWeight);
 
     //ADD TRACKING NUMBER
     String trackingNum = readTrackingNum();

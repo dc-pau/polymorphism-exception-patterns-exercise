@@ -31,6 +31,7 @@ public class Fragile extends Box{
     return 30;
   }
 
+  @Override
   public double getVolumetricWeight(){
     return super.getVolumetricWeight();
   }

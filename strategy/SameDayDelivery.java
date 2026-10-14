@@ -11,7 +11,7 @@ public class SameDayDelivery implements DeliveryStrategy{
 
   @Override
   public boolean isValidParcel(Parcel parcel){
-    return parcel.getChargeableWeight() <= 10;
+    return parcel.getChargeableWeight() <= 10 ? true : false;
   }
 
   @Override
