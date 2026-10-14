@@ -61,11 +61,24 @@ public class ParcelDeliverySystem{
     //delivery service -> express, standard, same day
     Display.subHeaderTitle("Delivery Service");
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
-    int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
 
-    while(parcel.getChargeableWeight() <= 10 && serviceChoice == 3){
-      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
+    int serviceChoice = 0;
+    DeliveryStrategy delivery;
+
+    boolean isValidService = false;
+    while(!isValidService){
       serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
+
+      delivery = switch(serviceChoice){
+        case 1 -> new StandardDelivery();
+        case 2 -> new ExpressDelivery();
+        case 3 -> new SameDayDelivery();
+        default -> throw new IllegalArgumentException();
+      };
+
+      if(delivery.isValidParcel(parcel)){break;}
+
+      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
     }
 
     //SET DELIVERY SERVICE
@@ -75,6 +88,11 @@ public class ParcelDeliverySystem{
       case 3 -> DeliveryService.SAME_DAY;
       default -> throw new IllegalArgumentException();
     };
+
+    while(!service.isValidParcel(parcel)){
+      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
+      serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
+    }
 
     parcel.setDeliveryService(service);
 
@@ -91,11 +109,10 @@ public class ParcelDeliverySystem{
 
     try{
       manager.addParcelItem(parcel);
+      System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
     }catch(DuplicateTrackingNumberException e){
       System.out.println(e.getMessage());
     }
-
-    System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
   }
 
   private static String readTrackingNum(){
@@ -154,12 +171,23 @@ public class ParcelDeliverySystem{
 
     Display.subHeaderTitle("Delivery Service");
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
-    int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
+    int serviceChoice = 0;
+    DeliveryStrategy delivery;
 
-    if(parcel.getChargeableWeight() <= 10 && serviceChoice == 3){
-      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
-      System.out.println("The parcel remains on " + parcel.getDeliveryService() + " delivery.");
-      return;
+    boolean isValidService = false;
+    while(!isValidService){
+      Validations.menuChecker("Choose your desired delivery service: ", 3);
+
+      delivery = switch(serviceChoice){
+        case 1 -> new StandardDelivery();
+        case 2 -> new ExpressDelivery();
+        case 3 -> new SameDayDelivery();
+        default -> throw new IllegalArgumentException();
+      };
+
+      if(delivery.isValidParcel(parcel)){break;}
+
+      System.out.println("Same Day delivery is only for parcels up to 10 kg!"); return;
     }
 
     //SET DELIVERY SERVICE
@@ -176,14 +204,6 @@ public class ParcelDeliverySystem{
     }
 
     parcel.setDeliveryService(service);
-
-    //CALCULATE DELIVERY FEE
-    DeliveryStrategy delivery = switch(serviceChoice){
-      case 1 -> new StandardDelivery();
-      case 2 -> new ExpressDelivery();
-      case 3 -> new SameDayDelivery();
-      default -> throw new IllegalArgumentException();
-    };
 
     double deliveryFee = parcel.getDeliveryFee(delivery);
     parcel.setDeliveryFee(deliveryFee);
