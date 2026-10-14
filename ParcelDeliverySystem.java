@@ -44,10 +44,7 @@ public class ParcelDeliverySystem{
 
     System.out.println("Fill out the following information:");
     String receiversName = Validations.stringEmptyChecker("Receiver's Name: ");
-
-
-    System.out.println("");
-    double weight = Validations.weightChecker(String.format("Enter %s's weight (max. %f): ", parcelType, maxWeight), maxWeight);
+    double weight = Validations.weightChecker(String.format("Enter %s's weight (max. %.1f): ", parcelType, maxWeight), maxWeight);
 
     //ADD TRACKING NUMBER
     String trackingNum = readTrackingNum();
@@ -67,9 +64,46 @@ public class ParcelDeliverySystem{
     //delivery service -> express, standard, same day
     Display.subHeaderTitle("Delivery Service");
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
-    int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
+    int serviceChoice = Validations.menuChecker("Choose your desired delivery service (1, 2, 3): ", 3);
 
     DeliveryStrategy delivery = switch(serviceChoice){
+      case 1 -> new StandardDelivery();
+      case 2 -> new ExpressDelivery();
+      case 3 -> new SameDayDelivery();
+      default -> throw new IllegalArgumentException();
+    };
+
+    boolean isValidDelivery = false;
+    while(!isValidDelivery){
+      if(delivery.isValidParcel(parcel)){
+        isValidDelivery = true;
+      }
+      System.out.println("Same Day delivery is only for parcels up to 10 kg!");
+      serviceChoice = Validations.menuChecker("Choose your desired delivery service (1, 2, 3): ", 3);
+    }
+
+    DeliveryService service = switch(serviceChoice){
+      case 1 -> DeliveryService.STANDARD;
+      case 2 -> DeliveryService.EXPRESS;
+      case 3 -> DeliveryService.SAME_DAY;
+      default -> throw new IllegalArgumentException();
+    };
+
+    parcel.setDeliveryService(service);
+
+    double deliveryFee = parcel.getDeliveryFee(delivery);
+    parcel.setDeliveryFee(deliveryFee);
+
+    try{
+      manager.addParcelItem(parcel);
+      System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
+    }catch(DuplicateTrackingNumberException e){
+      System.out.println(e.getMessage());
+    }
+
+
+
+    /*DeliveryStrategy delivery = switch(serviceChoice){
       case 1 -> new StandardDelivery();
       case 2 -> new ExpressDelivery();
       case 3 -> new SameDayDelivery();
@@ -100,7 +134,7 @@ public class ParcelDeliverySystem{
       System.out.println(e.getMessage());
     }
 
-    System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
+    System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);*/
   }
 
   private static String readTrackingNum(){
@@ -123,14 +157,14 @@ public class ParcelDeliverySystem{
   public static Box addBox(String trackingNum, String name, double weight){
     int length = Validations.menuChecker("Enter length in cm (max 80 cm): ", 80);
     int width = Validations.menuChecker("Enter width in cm (max 50 cm): ", 50);
-    int height = Validations.menuChecker("Enter height in cm (max 35): ", 35);
+    int height = Validations.menuChecker("Enter height in cm (max 35 cm): ", 35);
     return new Box(trackingNum, name, weight, length, width, height);
   }
 
   public static Box addFragile(String trackingNum, String name, double weight){
     int length = Validations.menuChecker("Enter length in cm (max 80 cm): ", 80);
     int width = Validations.menuChecker("Enter width in cm (max 50 cm): ", 50);
-    int height = Validations.menuChecker("Enter height in cm (max 35): ", 35);
+    int height = Validations.menuChecker("Enter height in cm (max 35 cm): ", 35);
     String note = Validations.stringEmptyChecker("Enter note (put N/A if none): ");
     return new Fragile(trackingNum, name, weight, length, width, height, note);
   }
