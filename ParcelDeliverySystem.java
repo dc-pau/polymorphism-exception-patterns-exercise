@@ -63,7 +63,14 @@ public class ParcelDeliverySystem{
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
     int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
 
-    while(parcel.getChargeableWeight() <= 10 && serviceChoice == 3){
+    DeliveryStrategy delivery = switch(serviceChoice){
+      case 1 -> new StandardDelivery();
+      case 2 -> new ExpressDelivery();
+      case 3 -> new SameDayDelivery();
+      default -> throw new IllegalArgumentException();
+    };
+
+    while(!delivery.isValidParcel(parcel)){
       System.out.println("Same Day delivery is only for parcels up to 10 kg!");
       serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
     }
@@ -77,14 +84,6 @@ public class ParcelDeliverySystem{
     };
 
     parcel.setDeliveryService(service);
-
-    //CALCULATE DELIVERY FEE
-    DeliveryStrategy delivery = switch(serviceChoice){
-      case 1 -> new StandardDelivery();
-      case 2 -> new ExpressDelivery();
-      case 3 -> new SameDayDelivery();
-      default -> throw new IllegalArgumentException();
-    };
 
     double deliveryFee = parcel.getDeliveryFee(delivery);
     parcel.setDeliveryFee(deliveryFee);
@@ -156,7 +155,14 @@ public class ParcelDeliverySystem{
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
     int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
 
-    if(parcel.getChargeableWeight() <= 10 && serviceChoice == 3){
+    DeliveryStrategy delivery = switch(serviceChoice){
+      case 1 -> new StandardDelivery();
+      case 2 -> new ExpressDelivery();
+      case 3 -> new SameDayDelivery();
+      default -> throw new IllegalArgumentException();
+    };
+
+    if(!delivery.isValidParcel(parcel)){
       System.out.println("Same Day delivery is only for parcels up to 10 kg!");
       System.out.println("The parcel remains on " + parcel.getDeliveryService() + " delivery.");
       return;
@@ -178,13 +184,6 @@ public class ParcelDeliverySystem{
     parcel.setDeliveryService(service);
 
     //CALCULATE DELIVERY FEE
-    DeliveryStrategy delivery = switch(serviceChoice){
-      case 1 -> new StandardDelivery();
-      case 2 -> new ExpressDelivery();
-      case 3 -> new SameDayDelivery();
-      default -> throw new IllegalArgumentException();
-    };
-
     double deliveryFee = parcel.getDeliveryFee(delivery);
     parcel.setDeliveryFee(deliveryFee);
     System.out.printf("Delivery service changed! New fee: Php %,.2f%n", deliveryFee);
