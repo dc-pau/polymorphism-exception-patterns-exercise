@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.DuplicateFormatFlagsException;
 
 import model.Box;
 import model.DeliveryService;
@@ -46,13 +44,7 @@ public class ParcelDeliverySystem{
     double weight = Validations.weightChecker(String.format("Enter %s's weight: ", parcelType));
 
     //ADD TRACKING NUMBER
-    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
-    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
-
-    while(!Validations.validTrackingNum(trackingNum)){
-      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
-      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
-    }
+    String trackingNum = readTrackingNum();
 
     while(ParcelManager.getInstance().trackingNumExists(trackingNum)){
       System.out.println("Tracking Number already exists. Use another tracking number.");
@@ -106,6 +98,18 @@ public class ParcelDeliverySystem{
     System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
   }
 
+  private static String readTrackingNum(){
+    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
+    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+
+    while(!Validations.validTrackingNum(trackingNum)){
+      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
+      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+    }
+
+    return trackingNum;
+  }
+
   public static Document addDocument(String trackingNum, String name, double weight){
     int pages = Validations.menuChecker("Enter number of pages: ", 100);
     return new Document(trackingNum, name, weight, pages);
@@ -133,20 +137,16 @@ public class ParcelDeliverySystem{
       return;
     }
 
-    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
-    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
+    String trackingNum = readTrackingNum();
 
-    while(!Validations.validTrackingNum(trackingNum)){
-      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
-      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
-    }
-
-    if(ParcelManager.getInstance().trackingNumExists(trackingNum)){
-      System.out.println("Parcel not found!");
+    Parcel parcel;
+    try{
+      parcel = manager.findParcel(trackingNum);
+    }catch(ParcelNotFoundException e){
+      System.out.println(e.getMessage());
       return;
-    }
+    };
 
-    Parcel parcel = manager.findParcel(trackingNum);
     if(parcel.getStatus().equalsIgnoreCase(Status.DELIVERED.toString())){
       System.out.println("Parcel already delivered!");
       return;
@@ -197,13 +197,7 @@ public class ParcelDeliverySystem{
       return;
     }
 
-    System.out.println("\nTRACKING NUMBER FORMAT: ABC followed by 4 digits, e.g. ABC0001");
-    String trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
-
-    while(!Validations.validTrackingNum(trackingNum)){
-      System.out.println("Wrong format. Use ABC followed by 4 digits, e.g. ABC0001");
-      trackingNum = Validations.stringEmptyChecker("Enter Tracking Number: ");
-    }
+    String trackingNum = readTrackingNum();
 
     if(ParcelManager.getInstance().trackingNumExists(trackingNum)){
       System.out.println("Parcel not found!");
