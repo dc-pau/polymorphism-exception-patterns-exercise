@@ -110,21 +110,21 @@ public class ParcelDeliverySystem{
   }
 
   public static Document addDocument(String trackingNum, String name, double weight){
-    int pages = Validations.menuChecker("Enter number of pages: ", 100);
+    int pages = Validations.menuChecker("Enter number of pages (max 100 pages): ", 100);
     return new Document(trackingNum, name, weight, pages);
   }
 
   public static Box addBox(String trackingNum, String name, double weight){
-    int length = Validations.menuChecker("Enter length in cm: ", 100);
-    int width = Validations.menuChecker("Enter width in cm: ", 100);
-    int height = Validations.menuChecker("Enter height in cm: ", 100);
+    int length = Validations.menuChecker("Enter length in cm (max 80 cm): ", 80);
+    int width = Validations.menuChecker("Enter width in cm (max 50 cm): ", 50);
+    int height = Validations.menuChecker("Enter height in cm (max 35): ", 35);
     return new Box(trackingNum, name, weight, length, width, height);
   }
 
   public static Box addFragile(String trackingNum, String name, double weight){
-    int length = Validations.menuChecker("Enter length in cm: ", 100);
-    int width = Validations.menuChecker("Enter width in cm: ", 100);
-    int height = Validations.menuChecker("Enter height in cm: ", 100);
+    int length = Validations.menuChecker("Enter length in cm (max 80 cm): ", 80);
+    int width = Validations.menuChecker("Enter width in cm (max 50 cm): ", 50);
+    int height = Validations.menuChecker("Enter height in cm (max 35): ", 35);
     String note = Validations.stringEmptyChecker("Enter note (put N/A if none): ");
     return new Fragile(trackingNum, name, weight, length, width, height, note);
   }
