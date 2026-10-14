@@ -22,7 +22,7 @@ public class Document extends Parcel{
 
   @Override 
   public int getChargeableWeight(){
-    return (int) this.getWeight();
+    return (int) Math.ceil(this.getWeight());
   }
 
   @Override
