@@ -31,9 +31,9 @@ public class Box extends Parcel {
 
   @Override 
   public double getChargeableWeight(){
-    double actualWeight = Math.ceil(this.getWeight());
-    double volumetricWeight = Math.ceil(getVolumetricWeight());
-    return Math.max(actualWeight, volumetricWeight);
+    double actualWeight = this.getWeight();
+    double volumetricWeight = getVolumetricWeight();
+    return Math.ceil(Math.max(actualWeight, volumetricWeight));
   }
 
   @Override

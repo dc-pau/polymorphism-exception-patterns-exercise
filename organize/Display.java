@@ -51,7 +51,7 @@ public class Display {
     String chargeableWeight;
     for(Parcel parcel : parcels){
       if(parcel.intChargeableWeight()){
-        chargeableWeight = String.format("%d kg", (int) Math.ceil(parcel.getChargeableWeight()));
+        chargeableWeight = String.format("%d kg", (int) parcel.getChargeableWeight());
       }else{
         chargeableWeight = String.format("%.2f kg", parcel.getChargeableWeight());
       }
