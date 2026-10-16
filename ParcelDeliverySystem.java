@@ -96,12 +96,8 @@ public class ParcelDeliverySystem{
     double deliveryFee = parcel.getDeliveryFee(delivery);
     parcel.setDeliveryFee(deliveryFee);
 
-    try{
-      manager.addParcelItem(parcel);
-      System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
-    }catch(DuplicateTrackingNumberException e){
-      System.out.println(e.getMessage());
-    }
+    manager.addParcelItem(parcel);
+    System.out.printf("\nParcel added successfully! Delivery fee: Php %,.2f%n", deliveryFee);
   }
 
   private static String readTrackingNum(){
@@ -140,6 +136,11 @@ public class ParcelDeliverySystem{
     Display.headerTitle("Change Delivery Service");
     if(manager.getAllParcels().isEmpty()){
       System.out.println("No parcels available.");
+      return;
+    }
+
+    if(!manager.pendingParcels()){
+      System.out.println("No parcels available for delivery service change.");
       return;
     }
 
@@ -226,15 +227,25 @@ public class ParcelDeliverySystem{
       return;
     }
 
-    String trackingNum = readTrackingNum();
-
-    try{
-      Parcel parcel = manager.findParcel(trackingNum);
-
-      if(parcel.isDelivered()){
-      System.out.println("Parcel was already delivered.");
+    if(!manager.pendingParcels()){
+      System.out.println("No parcels available for delivery.");
       return;
     }
+
+    String trackingNum = readTrackingNum();
+
+    Parcel parcel;
+    try{
+      parcel = manager.findParcel(trackingNum);
+    }catch(ParcelNotFoundException e){
+      System.out.println(e.getMessage());
+      return;
+    }
+
+    if(parcel.isDelivered()){
+        System.out.println("Parcel was already delivered.");
+        return;
+      }
 
     System.out.println("Parcel found!");
     Display.displayParcel(parcel, new String[][] {
@@ -254,9 +265,6 @@ public class ParcelDeliverySystem{
 
     parcel.setDeliveryStatus();
     System.out.println("Parcel delivered successfully!");
-    }catch(ParcelNotFoundException e){
-      System.out.println(e.getMessage());
-    };
 
   }
 

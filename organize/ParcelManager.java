@@ -1,6 +1,7 @@
 package organize;
 
 import model.Parcel;
+import model.Status;
 import java.util.ArrayList;
 
 public class ParcelManager {
@@ -26,10 +27,7 @@ public class ParcelManager {
     return false;
   }
 
-  public void addParcelItem(Parcel parcel) throws DuplicateTrackingNumberException{
-    if(trackingNumExists(parcel.getTrackingNum())){
-      throw new DuplicateTrackingNumberException("Tracking Number already exists.");
-    }
+  public void addParcelItem(Parcel parcel){
     parcels.add(parcel);
   }
 
@@ -39,5 +37,14 @@ public class ParcelManager {
     }
 
     throw new ParcelNotFoundException("Parcel not found!");
+  }
+
+  public boolean pendingParcels(){
+    for(Parcel parcel : parcels){
+      if(parcel.getStatus().equalsIgnoreCase(Status.PENDING.toString())){
+        return true;
+      }
+    }
+    return false;
   }
 }
