@@ -47,8 +47,15 @@ public class Display {
 
     System.out.printf( "%n%-20s  %-15s  %-15s  %-20s  %-15s  %-14s  %-10s%n%n", "TRACKING NUMBER", "PARCEL TYPE", "RECEIVER", "CHARGEABLE WEIGHT", "SERVICE", "DELIVERY FEE", "STATUS");
     System.out.println(lightLine);
+
+    String chargeableWeight;
     for(Parcel parcel : parcels){
-      System.out.printf("%n%-20s  %-15s  %-15s  %-20s  %-15s  %-14s  %-10s%n", parcel.getTrackingNum(), parcel.getType(), parcel.getName(), String.format("%s kg", String.valueOf(parcel.getChargeableWeight())), parcel.getDeliveryService(), String.format("Php %,.2f", parcel.getStoredDeliveryFee()), parcel.getStatus());
+      if(parcel.intChargeableWeight()){
+        chargeableWeight = String.format("%d kg", (int) Math.ceil(parcel.getChargeableWeight()));
+      }else{
+        chargeableWeight = String.format("%.2f kg", parcel.getChargeableWeight());
+      }
+      System.out.printf("%n%-20s  %-15s  %-15s  %-20s  %-15s  %-14s  %-10s%n", parcel.getTrackingNum().toUpperCase(), parcel.getType(), parcel.getName(), chargeableWeight, parcel.getDeliveryService(), String.format("Php %,.2f", parcel.getStoredDeliveryFee()), parcel.getStatus());
     }
 
   }
@@ -58,7 +65,7 @@ public class Display {
     headerTitle("Parcel Details");
 
     for(String[] detail : details) {
-      System.out.printf(" %-30s : %s%n", detail[0], detail[1]);
+      System.out.printf(" %-20s: %s%n", detail[0], detail[1]);
     }
 
     System.out.println(lightLine);

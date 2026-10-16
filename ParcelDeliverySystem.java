@@ -158,6 +158,22 @@ public class ParcelDeliverySystem{
       return;
     }
 
+    System.out.println("Parcel found!");
+    Display.displayParcel(parcel, new String[][] {
+        {"Tracking No.", parcel.getTrackingNum().toUpperCase()},
+        {"Parcel Type", parcel.getType()},
+        {"Receiver Name", parcel.getName()},
+        {"Delivery Service", parcel.getDeliveryService()},
+        {"Delivery Fee", String.format("Php %,.2f", parcel.getStoredDeliveryFee())}
+    });
+
+    char rightParcel = Validations.charValidation("Is this the parcel you are looking for? (y/n): ");
+
+    if(rightParcel == 'n'){
+      System.out.println("Nothing changed. Returning to menu.");
+      return;
+    }
+
     Display.subHeaderTitle("Delivery Service");
     Display.displayMenu("Standard Delivery", "Express Delivery", "Same Day Delivery");
     int serviceChoice = Validations.menuChecker("Choose your desired delivery service: ", 3);
@@ -172,6 +188,13 @@ public class ParcelDeliverySystem{
     if(!delivery.isValidParcel(parcel)){
       System.out.println("Same Day delivery is only for parcels up to 10 kg!");
       System.out.println("The parcel remains on " + parcel.getDeliveryService() + " delivery.");
+      return;
+    }
+
+    char change = Validations.charValidation("Confirm change in this parcel's delivery service? (y/n): ");
+
+    if(change == 'n'){
+      System.out.println("Nothing changed. Returning to menu.");
       return;
     }
 
@@ -213,6 +236,22 @@ public class ParcelDeliverySystem{
       return;
     }
 
+    System.out.println("Parcel found!");
+    Display.displayParcel(parcel, new String[][] {
+        {"Tracking No.", parcel.getTrackingNum().toUpperCase()},
+        {"Parcel Type", parcel.getType()},
+        {"Receiver Name", parcel.getName()},
+        {"Delivery Service", parcel.getDeliveryService()},
+        {"Delivery Fee", String.format("Php %,.2f", parcel.getStoredDeliveryFee())}
+    });
+
+    char rightParcel = Validations.charValidation("Confirm delivery for this parcel? (y/n): ");
+
+    if(rightParcel == 'n'){
+      System.out.println("Nothing changed. Returning to menu.");
+      return;
+    }
+
     parcel.setDeliveryStatus();
     System.out.println("Parcel delivered successfully!");
     }catch(ParcelNotFoundException e){
@@ -228,7 +267,7 @@ public class ParcelDeliverySystem{
 
     while(!isExit){
       Display.headerTitle("Menu");
-      Display.displayMenu("Add Parcel", "View All Parcels", "Change Delivery", "Mark as Delivered", "Exit");
+      Display.displayMenu("Add Parcel", "View All Parcels", "Change Delivery Service", "Mark as Delivered", "Exit");
       int menu = Validations.menuChecker("Enter Menu Choice (1, 2, 3, 4, 5): ", 5);
 
       switch(menu){

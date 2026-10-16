@@ -23,6 +23,13 @@ public abstract class Parcel {
   public String getTrackingNum(){return this.trackingNum;}
   public String getName(){return this.name;}
   public double getWeight(){return this.weight;}
+  public boolean intChargeableWeight(){
+    if(!this.getType().equalsIgnoreCase("Document")){
+      return true;
+    }else{
+      return false;
+    }
+  }
 
   public String getStatus(){return this.status.toString();}
   public String getDeliveryService(){return deliveryService.toString();}
@@ -38,12 +45,11 @@ public abstract class Parcel {
   public boolean isDelivered(){return this.status == Status.DELIVERED;}
 
   public void setDeliveryService(DeliveryService deliveryService){this.deliveryService = deliveryService;}
-  //public Status setStatus(){}
 
   //abstracts
   public abstract String getType();
   public abstract double getBaseFee();
-  public abstract int getChargeableWeight();
+  public abstract double getChargeableWeight();
   public abstract double getMaxWeight();
 
 }
